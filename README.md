@@ -1,1 +1,1 @@
-# restobook_mobile_manager
+# restobook_web
