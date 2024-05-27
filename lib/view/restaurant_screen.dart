@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restobook_web/view/employee_creation_form.dart';
 import 'package:restobook_web/view/info_label.dart';
 import 'package:restobook_web/view/refreshable_future_list_view.dart';
 
@@ -95,7 +96,11 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       listWidgets.add(Container(
                           margin: const EdgeInsets.only(top: 15),
                           child: OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) => const EmployeeCreationForm())
+                                );
+                              },
                               child: const Text("Добавить администратора"))));
                       return ListView(
                         physics: const AlwaysScrollableScrollPhysics(),

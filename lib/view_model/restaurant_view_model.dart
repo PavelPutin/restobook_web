@@ -54,4 +54,10 @@ class RestaurantViewModel extends ChangeNotifier {
     await restaurantRepository.delete(restaurant);
     notifyListeners();
   }
+
+  Future<void> createAdmin(Employee created) async {
+    await employeeRepository.create(created);
+    await loadActiveRestaurant(_activeRestaurant!.id!);
+    notifyListeners();
+  }
 }
