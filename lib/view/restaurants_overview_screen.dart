@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restobook_web/view/refreshable_future_list_view.dart';
+import 'package:restobook_web/view/restaurant_creation_form.dart';
 import 'package:restobook_web/view/restaurant_tile.dart';
 import 'package:restobook_web/view_model/restaurant_view_model.dart';
 
@@ -49,6 +50,15 @@ class _RestaurantsOverviewScreenState extends State<RestaurantsOverviewScreen> {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const RestaurantCreationForm())
+          );
+        },
+        icon: const Icon(Icons.add),
+        label: const Text("Создать ресторан"),
       ),
     );
   }
