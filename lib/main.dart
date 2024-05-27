@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+
+import 'model/repository/abstract_employee_repository.dart';
+import 'model/repository/mock_backend.dart';
+import 'model/repository/mock_employee_repository.dart';
 
 void main() {
+  GetIt.I.registerSingleton<MockBackend>(MockBackend());
+  GetIt.I.registerSingleton<AbstractEmployeeRepository>(
+      MockEmployeeRepository());
+
   runApp(const MyApp());
 }
 
