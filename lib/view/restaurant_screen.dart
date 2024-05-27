@@ -16,13 +16,13 @@ class RestaurantScreen extends StatefulWidget {
 }
 
 class _RestaurantScreenState extends State<RestaurantScreen> {
-
   late Future<void> restaurantLoading;
 
   @override
   void initState() {
     super.initState();
-    restaurantLoading = Provider.of<RestaurantViewModel>(context, listen: false).loadActiveRestaurant(widget.restaurant.id!);
+    restaurantLoading = Provider.of<RestaurantViewModel>(context, listen: false)
+        .loadActiveRestaurant(widget.restaurant.id!);
   }
 
   @override
@@ -39,9 +39,11 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                return Consumer<RestaurantViewModel>(builder: (BuildContext context, value, Widget? child) {
-                  return Text(value.activeRestaurant!.name);
-                },);
+                return Consumer<RestaurantViewModel>(
+                  builder: (BuildContext context, value, Widget? child) {
+                    return Text(value.activeRestaurant!.name);
+                  },
+                );
               },
             ),
           ),
@@ -53,31 +55,55 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
           child: Card(
             margin: const EdgeInsets.all(15),
             child: Padding(
-              padding: const EdgeInsets.only(left: 15.0, top: 15.0, right: 15.0),
+              padding:
+                  const EdgeInsets.only(left: 15.0, top: 15.0, right: 15.0),
               child: RefreshableFutureListView(
                   future: restaurantLoading,
                   onRefresh: () async {
-                    var promise = context.read<RestaurantViewModel>().loadActiveRestaurant(widget.restaurant.id!);
+                    var promise = context
+                        .read<RestaurantViewModel>()
+                        .loadActiveRestaurant(widget.restaurant.id!);
                     setState(() {
                       restaurantLoading = promise;
                     });
                     await promise;
                   },
-                  listView: Consumer<RestaurantViewModel>(builder: (BuildContext context, RestaurantViewModel value, Widget? child) {
-                    List<Widget> listWidgets = [
-                      InfoLabel(label: "Название", info: value.activeRestaurant!.name),
-                      InfoLabel(label: "Юридическое лицо", info: value.activeRestaurant!.legalEntityName),
-                      InfoLabel(label: "ИНН", info: value.activeRestaurant!.inn),
-                      InfoLabel(label: "Комментарий", info: value.activeRestaurant!.comment ?? "-"),
-                      const Text("Сотрудники")
-                    ];
-                    for (var employee in value.activeRestaurantEmployees) {
-                      listWidgets.add(Text(employee.shortFullName));
-                    }
-                    return ListView(physics: const AlwaysScrollableScrollPhysics(),children: listWidgets,);
-                  },),
-                  errorLabel: "Не удалось загрузить ресторан"
-              ),
+                  listView: Consumer<RestaurantViewModel>(
+                    builder: (BuildContext context, RestaurantViewModel value,
+                        Widget? child) {
+                      List<Widget> listWidgets = [
+                        InfoLabel(
+                            label: "Название",
+                            info: value.activeRestaurant!.name),
+                        InfoLabel(
+                            label: "Юридическое лицо",
+                            info: value.activeRestaurant!.legalEntityName),
+                        InfoLabel(
+                            label: "ИНН", info: value.activeRestaurant!.inn),
+                        InfoLabel(
+                            label: "Комментарий",
+                            info: value.activeRestaurant!.comment ?? "-"),
+                        Text("Сотрудники:", style: Theme.of(context).textTheme.headlineSmall)
+                      ];
+                      for (var employee in value.activeRestaurantEmployees) {
+                        listWidgets.add(Text(employee.shortFullName));
+                      }
+                      if (value.activeRestaurantEmployees.isEmpty) {
+                        listWidgets.add(
+                            Text("В ресторане не зарегистрированы сотрудники"));
+                      }
+                      listWidgets.add(Container(
+                          margin: const EdgeInsets.only(top: 15),
+                          child: OutlinedButton(
+                              onPressed: () {},
+                              child: const Text("Добавить администратора"))));
+                      return ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: listWidgets,
+                      );
+                    },
+                  ),
+                  errorLabel: "Не удалось загрузить ресторан"),
             ),
           ),
         ),
