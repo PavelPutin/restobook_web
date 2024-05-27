@@ -10,7 +10,7 @@ Restaurant _$RestaurantFromJson(Map<String, dynamic> json) => Restaurant(
       (json['id'] as num?)?.toInt(),
       json['name'] as String,
       json['legalEntityName'] as String,
-      (json['inn'] as num).toInt(),
+      json['inn'] as String,
       json['comment'] as String?,
     );
 

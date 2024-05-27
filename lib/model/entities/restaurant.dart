@@ -9,7 +9,7 @@ class Restaurant {
   int? id;
   String name;
   String legalEntityName;
-  int inn;
+  String inn;
   String? comment;
 
   factory Restaurant.fromJson(Map<String, dynamic> json) => _$RestaurantFromJson(json);
