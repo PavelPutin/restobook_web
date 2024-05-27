@@ -7,11 +7,11 @@ part 'auth_entity.g.dart';
 @JsonSerializable()
 class AuthEntity {
   AuthEntity(
-      this.employee,
+      this.login,
       this.password,
       this.role,
       );
-  Employee employee;
+  String login;
   String password;
   String role;
 
