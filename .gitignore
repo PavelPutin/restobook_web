@@ -13,6 +13,7 @@ doc/api/
 
 # dotenv environment variables file
 .env*
+apiKeys.json
 
 # Avoid committing generated Javascript files:
 *.dart.js
@@ -25,3 +26,11 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+.metadata
+/.idea
+/linux
+/macos
+/web
+/windows
+/ios
