@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restobook_web/view/refreshable_future_list_view.dart';
+import 'package:restobook_web/view/restaurant_tile.dart';
 import 'package:restobook_web/view_model/restaurant_view_model.dart';
 
 class RestaurantsOverviewScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _RestaurantsOverviewScreenState extends State<RestaurantsOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Рестораны в Restobook"),),
+      appBar: AppBar(title: const Center(child: Text("Рестораны в Restobook")),),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
@@ -34,7 +35,7 @@ class _RestaurantsOverviewScreenState extends State<RestaurantsOverviewScreen> {
               child: Consumer<RestaurantViewModel>(
                 builder: (BuildContext context, RestaurantViewModel value, Widget? child) {
                   return RefreshableFutureListView(
-                      tablesLoading: restaurantsLoading,
+                      future: restaurantsLoading,
                       onRefresh: () async {
                         var promise = context.read<RestaurantViewModel>().load();
                         setState(() {
@@ -42,7 +43,7 @@ class _RestaurantsOverviewScreenState extends State<RestaurantsOverviewScreen> {
                         });
                         await promise;
                       },
-                      listView: ListView.builder(itemCount: value.restaurants.length, itemBuilder: (context, index) => Text(value.restaurants[index].name)),
+                      listView: ListView.builder(physics: const AlwaysScrollableScrollPhysics(), itemCount: value.restaurants.length, itemBuilder: (context, index) => RestaurantTile(restaurant: value.restaurants[index])),
                       errorLabel: "Не удалось загрузить рестораны");
                 },),
             ),

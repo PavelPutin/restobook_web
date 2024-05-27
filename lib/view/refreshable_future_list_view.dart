@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class RefreshableFutureListView extends StatefulWidget {
-  const RefreshableFutureListView({super.key, required this.tablesLoading, required this.onRefresh, required this.listView, required this.errorLabel});
+  const RefreshableFutureListView({super.key, required this.future, required this.onRefresh, required this.listView, required this.errorLabel});
 
   final String errorLabel;
   final AsyncCallback onRefresh;
-  final Future<void> tablesLoading;
+  final Future<void> future;
   final Widget listView;
 
   @override
@@ -26,7 +26,7 @@ class _RefreshableFutureListViewState extends State<RefreshableFutureListView> {
         await widget.onRefresh();
       },
       child: FutureBuilder(
-        future: widget.tablesLoading,
+        future: widget.future,
         builder: (ctx, snapshot) {
           if (!_refreshing && snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

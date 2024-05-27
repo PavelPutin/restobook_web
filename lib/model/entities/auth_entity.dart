@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'employee.dart';
-
 part 'auth_entity.g.dart';
 
 @JsonSerializable()

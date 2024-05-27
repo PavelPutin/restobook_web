@@ -15,12 +15,12 @@ class RestaurantViewModel extends ChangeNotifier {
   List<Restaurant> _restaurants = [];
   UnmodifiableListView<Restaurant> get restaurants => UnmodifiableListView(_restaurants);
 
-  Restaurant? _activeTable;
-  Restaurant? get activeRestaurant => _activeTable;
-  set activeRestaurant(Restaurant? table) => _activeTable = table;
+  Restaurant? _activeRestaurant;
+  Restaurant? get activeRestaurant => _activeRestaurant;
+  set activeRestaurant(Restaurant? restaurant) => _activeRestaurant = restaurant;
 
   final List<Employee> _activeRestaurantEmployees = [];
-  UnmodifiableListView<Employee> get activeTableReservations =>
+  UnmodifiableListView<Employee> get activeRestaurantEmployees =>
       UnmodifiableListView(_activeRestaurantEmployees);
 
   Future<void> load() async {
@@ -32,6 +32,8 @@ class RestaurantViewModel extends ChangeNotifier {
   Future<void> loadActiveRestaurant(int restaurantId) async {
     // TODO: ADD HTTP REQUEST TO GET EMPLOYEES BY ID
     activeRestaurant = await restaurantRepository.getById(restaurantId);
+    _activeRestaurantEmployees.clear();
+    _activeRestaurantEmployees.addAll(await employeeRepository.getAllByRestaurant(restaurantId));
     notifyListeners();
   }
 

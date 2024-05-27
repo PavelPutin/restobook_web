@@ -24,8 +24,16 @@ class MockEmployeeRepository extends AbstractEmployeeRepository {
   }
 
   @override
-  Future<List<Employee>> getAll() {
-    return ConnectionSimulator<List<Employee>>().connect(() => _employees);
+  Future<List<Employee>> getAllByRestaurant(int restaurantId) {
+    return ConnectionSimulator<List<Employee>>().connect(() {
+      List<Employee> result = [];
+      for (var e in _employees) {
+        if (e.restaurantId == restaurantId) {
+          result.add(e);
+        }
+      }
+      return result;
+    });
   }
 
   @override
