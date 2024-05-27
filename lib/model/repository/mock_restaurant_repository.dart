@@ -29,6 +29,18 @@ class MockRestaurantRepository extends AbstractRestaurantRepository {
   }
 
   @override
+  Future<Restaurant> getById(int id) {
+    return ConnectionSimulator<Restaurant>().connect(() {
+      for (int i = 0; i < _restaurants.length; i++) {
+        if (_restaurants[i].id == id) {
+          return _restaurants[i];
+        }
+      }
+      throw Exception("Ресторан не найден");
+    });
+  }
+
+  @override
   Future<Restaurant> update(Restaurant restaurant) {
     return ConnectionSimulator<Restaurant>().connect(() {
       for (int i = 0; i < _restaurants.length; i++) {
@@ -37,7 +49,7 @@ class MockRestaurantRepository extends AbstractRestaurantRepository {
           return restaurant;
         }
       }
-      throw Exception("Сотрудник не найден");
+      throw Exception("Ресторан не найден");
     });
   }
 
@@ -45,5 +57,4 @@ class MockRestaurantRepository extends AbstractRestaurantRepository {
   Future<void> delete(Restaurant restaurant) {
     return ConnectionSimulator<void>().connect(() => _restaurants.remove(restaurant));
   }
-
 }
