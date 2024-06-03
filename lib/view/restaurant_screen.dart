@@ -6,6 +6,7 @@ import 'package:restobook_web/view/refreshable_future_list_view.dart';
 
 import '../model/entities/restaurant.dart';
 import '../view_model/restaurant_view_model.dart';
+import 'delete_icon_button.dart';
 
 class RestaurantScreen extends StatefulWidget {
   const RestaurantScreen({super.key, required this.restaurant});
@@ -30,23 +31,36 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1200),
-            child: FutureBuilder(
-              future: restaurantLoading,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+        centerTitle: true,
+        title: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1100),
+          child: FutureBuilder(
+            future: restaurantLoading,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-                return Consumer<RestaurantViewModel>(
-                  builder: (BuildContext context, value, Widget? child) {
-                    return Text(value.activeRestaurant!.name);
-                  },
-                );
-              },
-            ),
+              return Consumer<RestaurantViewModel>(
+                builder: (BuildContext context, value, Widget? child) {
+                  return Row(
+                    children: [
+                      Text(value.activeRestaurant!.name),
+                      DeleteIconButton(
+                        dialogTitle: const Text("Удалить ресторан"),
+                        onSubmit: () {
+                          return context.read<RestaurantViewModel>().delete(
+                            context.read<RestaurantViewModel>().activeRestaurant!
+                          );
+                        },
+                        successLabel: "Сотрудник удалён",
+                        errorLabel: "Не удалось удалить сотрудника",
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
         ),
       ),
@@ -84,7 +98,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                         InfoLabel(
                             label: "Комментарий",
                             info: value.activeRestaurant!.comment ?? "-"),
-                        Text("Сотрудники:", style: Theme.of(context).textTheme.headlineSmall)
+                        Text("Сотрудники:",
+                            style: Theme.of(context).textTheme.headlineSmall)
                       ];
                       for (var employee in value.activeRestaurantEmployees) {
                         listWidgets.add(Text(employee.shortFullName));
@@ -97,9 +112,9 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                           margin: const EdgeInsets.only(top: 15),
                           child: OutlinedButton(
                               onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) => const EmployeeCreationForm())
-                                );
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const EmployeeCreationForm()));
                               },
                               child: const Text("Добавить администратора"))));
                       return ListView(
