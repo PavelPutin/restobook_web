@@ -11,6 +11,7 @@ import 'package:restobook_web/view_model/application_view_model.dart';
 import 'package:restobook_web/view_model/restaurant_view_model.dart';
 
 import 'model/repository/abstract_employee_repository.dart';
+import 'model/repository/http_restaurant_repository.dart';
 import 'model/repository/mock_backend.dart';
 import 'model/repository/mock_employee_repository.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +34,7 @@ void main() {
   GetIt.I.registerSingleton<AbstractEmployeeRepository>(
       MockEmployeeRepository());
   GetIt.I.registerSingleton<AbstractRestaurantRepository>(
-      MockRestaurantRepository());
+      HttpRestaurantRepository());
   GetIt.I.registerSingleton<AbstractAuthService>(HttpAuthService());
 
   runApp(MultiProvider(providers: [
