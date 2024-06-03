@@ -35,6 +35,15 @@ class _RestaurantsOverviewScreenState extends State<RestaurantsOverviewScreen> {
               padding: const EdgeInsets.only(left: 15.0, top: 15.0, right: 15.0),
               child: Consumer<RestaurantViewModel>(
                 builder: (BuildContext context, RestaurantViewModel value, Widget? child) {
+                  Widget listContent;
+                  if (value.restaurants.isEmpty) {
+                    listContent = const Center(child: Text("Нет созданных ресторанов"));
+                  } else {
+                    listContent = ListView.builder(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: value.restaurants.length,
+                        itemBuilder: (context, index) => RestaurantTile(restaurant: value.restaurants[index]));
+                  }
                   return RefreshableFutureListView(
                       future: restaurantsLoading,
                       onRefresh: () async {
@@ -44,7 +53,7 @@ class _RestaurantsOverviewScreenState extends State<RestaurantsOverviewScreen> {
                         });
                         await promise;
                       },
-                      listView: ListView.builder(physics: const AlwaysScrollableScrollPhysics(), itemCount: value.restaurants.length, itemBuilder: (context, index) => RestaurantTile(restaurant: value.restaurants[index])),
+                      listView: listContent,
                       errorLabel: "Не удалось загрузить рестораны");
                 },),
             ),
