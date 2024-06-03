@@ -18,8 +18,6 @@ class ApplicationViewModel extends ChangeNotifier {
   bool get isAdmin => _authorizedUser != null && _authorizedUser!.role == "ROLE_restobook_admin";
 
   Future<void> login(String username, String password) async {
-    // await authService.login(username, password)
-    //     .then((value) => _authorizedUser = value);
     try {
       _authorizedUser = await authService.login(username, password);
       notifyListeners();
@@ -32,7 +30,7 @@ class ApplicationViewModel extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    // await authService.logout();
+    await authService.logout();
     _authorizedUser = null;
     notifyListeners();
   }

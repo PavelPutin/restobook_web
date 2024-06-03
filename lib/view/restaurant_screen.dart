@@ -5,8 +5,10 @@ import 'package:restobook_web/view/info_label.dart';
 import 'package:restobook_web/view/refreshable_future_list_view.dart';
 
 import '../model/entities/restaurant.dart';
+import '../view_model/application_view_model.dart';
 import '../view_model/restaurant_view_model.dart';
 import 'delete_icon_button.dart';
+import 'login_screen.dart';
 
 class RestaurantScreen extends StatefulWidget {
   const RestaurantScreen({super.key, required this.restaurant});
@@ -63,6 +65,16 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             },
           ),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.read<ApplicationViewModel>().logout();
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const LoginScreen()));
+              },
+              color: Theme.of(context).colorScheme.error,
+              icon: const Icon(Icons.exit_to_app))
+        ],
       ),
       body: Center(
         child: ConstrainedBox(

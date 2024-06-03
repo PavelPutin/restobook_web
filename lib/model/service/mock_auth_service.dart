@@ -14,4 +14,9 @@ class MockAuthService extends AbstractAuthService {
       throw Exception("Ошибка в логине или пароле");
     });
   }
+
+  @override
+  Future<void> logout() {
+    return ConnectionSimulator<void>().connect(() {});
+  }
 }

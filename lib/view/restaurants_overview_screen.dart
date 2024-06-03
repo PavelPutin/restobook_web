@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restobook_web/view/login_screen.dart';
 import 'package:restobook_web/view/refreshable_future_list_view.dart';
 import 'package:restobook_web/view/restaurant_creation_form.dart';
 import 'package:restobook_web/view/restaurant_tile.dart';
 import 'package:restobook_web/view_model/restaurant_view_model.dart';
+
+import '../view_model/application_view_model.dart';
 
 class RestaurantsOverviewScreen extends StatefulWidget {
   const RestaurantsOverviewScreen({super.key});
@@ -25,7 +28,19 @@ class _RestaurantsOverviewScreenState extends State<RestaurantsOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Center(child: Text("Рестораны в Restobook")),),
+      appBar: AppBar(
+        title: const Center(child: Text("Рестораны в Restobook")),
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.read<ApplicationViewModel>().logout();
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const LoginScreen()));
+              },
+              color: Theme.of(context).colorScheme.error,
+              icon: const Icon(Icons.exit_to_app))
+        ],
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
