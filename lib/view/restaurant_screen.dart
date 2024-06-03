@@ -53,8 +53,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                             context.read<RestaurantViewModel>().activeRestaurant!
                           );
                         },
-                        successLabel: "Сотрудник удалён",
-                        errorLabel: "Не удалось удалить сотрудника",
+                        successLabel: "Ресторан удалён",
+                        errorLabel: "Не удалось удалить ресторан",
                       ),
                     ],
                   );
