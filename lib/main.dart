@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:restobook_web/model/repository/abstract_restaurant_repository.dart';
 import 'package:restobook_web/model/service/abstract_auth_service.dart';
+import 'package:restobook_web/model/service/http_auth_service.dart';
 import 'package:restobook_web/model/service/mock_auth_service.dart';
 import 'package:restobook_web/view/login_screen.dart';
 import 'package:restobook_web/view/restaurants_overview_screen.dart';
@@ -15,6 +16,7 @@ import 'model/repository/mock_employee_repository.dart';
 import 'package:provider/provider.dart';
 
 import 'model/repository/mock_restaurant_repository.dart';
+import 'model/service/api_dio.dart';
 
 void main() {
 
@@ -23,12 +25,16 @@ void main() {
   );
   GetIt.I.registerSingleton<Logger>(logger);
 
+  final api = Api();
+  api.init();
+  GetIt.I.registerSingleton<Api>(api);
+
   GetIt.I.registerSingleton<MockBackend>(MockBackend());
   GetIt.I.registerSingleton<AbstractEmployeeRepository>(
       MockEmployeeRepository());
   GetIt.I.registerSingleton<AbstractRestaurantRepository>(
       MockRestaurantRepository());
-  GetIt.I.registerSingleton<AbstractAuthService>(MockAuthService());
+  GetIt.I.registerSingleton<AbstractAuthService>(HttpAuthService());
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => RestaurantViewModel()),
