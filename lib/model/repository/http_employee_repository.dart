@@ -30,6 +30,12 @@ class HttpEmployeeRepository extends AbstractEmployeeRepository {
       return created;
     } on DioException catch (e) {
       logger.e("Can't create employee", error: e);
+      if (e.response != null && e.response!.statusCode == 400) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic> && data["messages"] is List<dynamic>) {
+          throw "Login must be unique";
+        }
+      }
       rethrow;
     }
   }

@@ -22,6 +22,8 @@ class _EmployeeCreationFormState extends State<EmployeeCreationForm> {
   final commentController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool loginIsUnique = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,9 +50,11 @@ class _EmployeeCreationFormState extends State<EmployeeCreationForm> {
                       margin: const EdgeInsets.only(top: 10),
                       child: TextFormField(
                         controller: loginController,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Логин администратора*"),
+                        decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: "Логин администратора*",
+                            errorText: loginIsUnique ? null : "Этот логин уже занят"
+                        ),
                         validator: _nameValidator,
                       ),
                     ),
@@ -163,10 +167,19 @@ class _EmployeeCreationFormState extends State<EmployeeCreationForm> {
           context.read<RestaurantViewModel>().activeRestaurant!.id!);
 
       setState(() {
+        loginIsUnique = true;
         submiting = context.read<RestaurantViewModel>().createAdmin(created, password, "restobook_admin");
         submiting.then((value) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Администратор успешно добавлен")));
           Navigator.of(context).pop();
+        });
+        submiting.onError((error, stackTrace) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Не удалось добавить администратора")));
+          if (error == "Login must be unique") {
+            setState(() {
+              loginIsUnique = false;
+            });
+          }
         });
       });
     }
