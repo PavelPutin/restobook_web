@@ -19,4 +19,9 @@ class MockAuthService extends AbstractAuthService {
   Future<void> logout() {
     return ConnectionSimulator<void>().connect(() {});
   }
+
+  @override
+  Future<AuthEntity?> getAuthorized() async {
+    return null;
+  }
 }

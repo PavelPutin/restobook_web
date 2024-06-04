@@ -41,25 +41,47 @@ void main() {
   ], child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late Future<void> initiatingApplicationViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    initiatingApplicationViewModel = Provider.of<ApplicationViewModel>(context, listen: false).init();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget startScreen;
-    if (context.read<ApplicationViewModel>().authorized) {
-      startScreen = const RestaurantsOverviewScreen();
-    } else {
-      startScreen = const LoginScreen();
-    }
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: startScreen,
+      home: FutureBuilder(
+        future: initiatingApplicationViewModel,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          Widget startScreen;
+          if (context.read<ApplicationViewModel>().authorized) {
+            startScreen = const RestaurantsOverviewScreen();
+          } else {
+            startScreen = const LoginScreen();
+          }
+
+          return startScreen;
+        },
+      ),
     );
   }
 }

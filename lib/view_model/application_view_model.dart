@@ -17,6 +17,15 @@ class ApplicationViewModel extends ChangeNotifier {
   bool get authorized => _authorizedUser != null;
   bool get isAdmin => _authorizedUser != null && _authorizedUser!.role == "ROLE_restobook_admin";
 
+  Future<void> init() async {
+    try {
+      logger.t("Try init application view model");
+      _authorizedUser = await authService.getAuthorized();
+    } catch (e) {
+      logger.e("Can't init application view model");
+    }
+  }
+
   Future<void> login(String username, String password) async {
     try {
       _authorizedUser = await authService.login(username, password);
