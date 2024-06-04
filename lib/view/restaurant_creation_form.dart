@@ -21,6 +21,9 @@ class _RestaurantCreationFormState extends State<RestaurantCreationForm> {
   final TextEditingController innController = TextEditingController();
   final TextEditingController commentController = TextEditingController();
 
+  bool legalEntityNameIsUnique = true;
+  bool innIsUnique = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,9 +60,11 @@ class _RestaurantCreationFormState extends State<RestaurantCreationForm> {
                       margin: const EdgeInsets.only(top: 10),
                       child: TextFormField(
                         controller: legalEntityNameController,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Название юридического лица*"),
+                        decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: "Название юридического лица*",
+                            errorText: legalEntityNameIsUnique ? null : "Такое юридическое лицо уже зарегистировано"
+                        ),
                         validator: _nameValidator,
                       ),
                     ),
@@ -67,8 +72,11 @@ class _RestaurantCreationFormState extends State<RestaurantCreationForm> {
                       margin: const EdgeInsets.only(top: 10),
                       child: TextFormField(
                         controller: innController,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(), labelText: "ИНН*"),
+                        decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: "ИНН*",
+                            errorText: innIsUnique ? null : "Данные ИНН уже зарегистрирован"
+                        ),
                         validator: _innValidator,
                       ),
                     ),
@@ -150,6 +158,9 @@ class _RestaurantCreationFormState extends State<RestaurantCreationForm> {
               : commentController.text.trim());
 
       setState(() {
+        legalEntityNameIsUnique = true;
+        innIsUnique = true;
+
         submiting = context.read<RestaurantViewModel>().add(created);
         submiting.then((value) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ресторан успешно создан")));
@@ -161,6 +172,17 @@ class _RestaurantCreationFormState extends State<RestaurantCreationForm> {
                       context.read<RestaurantViewModel>().activeRestaurant!)
               )
           );
+        });
+        submiting.onError((error, stackTrace) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Не удалось добавить ресторан")));
+          error = error as List<dynamic>;
+          if (error.contains("Legal entity name must be unique")) {
+            setState(() => legalEntityNameIsUnique = false);
+          }
+          
+          if (error.contains("INN must be unique")) {
+            setState(() => innIsUnique = false);
+          }
         });
       });
     }
