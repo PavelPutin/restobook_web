@@ -147,6 +147,7 @@ class _EmployeeCreationFormState extends State<EmployeeCreationForm> {
 
   void submit() async {
     if (formKey.currentState!.validate()) {
+      final password = passwordController.text;
       Employee created = Employee(
           null,
           loginController.text.trim(),
@@ -162,7 +163,7 @@ class _EmployeeCreationFormState extends State<EmployeeCreationForm> {
           context.read<RestaurantViewModel>().activeRestaurant!.id!);
 
       setState(() {
-        submiting = context.read<RestaurantViewModel>().createAdmin(created);
+        submiting = context.read<RestaurantViewModel>().createAdmin(created, password, "restobook_admin");
         submiting.then((value) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Администратор успешно добавлен")));
           Navigator.of(context).pop();

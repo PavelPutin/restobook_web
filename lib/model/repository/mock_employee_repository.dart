@@ -9,7 +9,7 @@ class MockEmployeeRepository extends AbstractEmployeeRepository {
   final List<Employee> _employees = GetIt.I<MockBackend>().employee;
 
   @override
-  Future<Employee> create(Employee employee) {
+  Future<Employee> create(int restaurantId, Employee employee, String password, String role) {
     return ConnectionSimulator<Employee>().connect(() {
       int maxId = 0;
       for (var e in _employees) {
