@@ -64,6 +64,7 @@ class HttpRestaurantRepository extends AbstractRestaurantRepository {
 
   @override
   Future<Restaurant> update(Restaurant restaurant) {
+    logger.w("MOCK RESTAURANT UPDATE");
     return ConnectionSimulator<Restaurant>().connect(() {
       for (int i = 0; i < _restaurants.length; i++) {
         if (_restaurants[i].id == restaurant.id) {

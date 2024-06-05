@@ -118,7 +118,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       }
                       if (value.activeRestaurantEmployees.isEmpty) {
                         listWidgets.add(
-                            Text("В ресторане не зарегистрированы сотрудники"));
+                            const Text("В ресторане не зарегистрированы сотрудники"));
                       }
                       listWidgets.add(Container(
                           margin: const EdgeInsets.only(top: 15),

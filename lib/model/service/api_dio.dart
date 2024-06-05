@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -9,14 +8,7 @@ class Api {
 
   final Dio dio = Dio();
 
-  //todo: to remove
-  // final Dio retryDio = Dio(BaseOptions(baseUrl: 'https://restobook.fun'));
-  // final storage.FlutterSecureStorage secureStorage =
-  // const storage.FlutterSecureStorage();
   final Future<SharedPreferences> secureStorageFuture = SharedPreferences.getInstance();
-
-  // todo: change
-  // static const basePath = 'http://192.168.1.97:8181';
   static const basePath = 'https://restobook.fun';
 
   static const accessTokenKey = 'access_token';
@@ -104,7 +96,6 @@ class Api {
             return handler.next(error);
           } on DioException catch (e) {
             logger.e("Dio exception in anauthorized request processing", error: e);
-            // return handler.reject(e);
             return handler.reject(error);
           }
         }

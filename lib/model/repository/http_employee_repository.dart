@@ -59,6 +59,7 @@ class HttpEmployeeRepository extends AbstractEmployeeRepository {
 
   @override
   Future<Employee> update(Employee employee) {
+    logger.w("MOCK EMPLOYEE UPDATE");
     return ConnectionSimulator<Employee>().connect(() {
       for (int i = 0; i < _employees.length; i++) {
         if (_employees[i].id == employee.id) {

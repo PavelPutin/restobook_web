@@ -102,6 +102,5 @@ class HttpAuthService extends AbstractAuthService {
       logger.e("Can't get authorized");
       rethrow;
     }
-    return null;
   }
 }
