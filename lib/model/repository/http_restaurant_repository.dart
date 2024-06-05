@@ -27,6 +27,13 @@ class HttpRestaurantRepository extends AbstractRestaurantRepository {
       return created;
     } on DioException catch (e) {
       logger.e("Can't create restaurant", error: e);
+      if (e.response != null &&
+          e.response!.data != null &&
+          e.response!.data is Map<String, dynamic> &&
+          e.response!.data["messages"] is List<dynamic>
+      ) {
+        throw e.response!.data["messages"];
+      }
       rethrow;
     }
   }

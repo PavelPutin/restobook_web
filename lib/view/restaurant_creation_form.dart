@@ -75,7 +75,7 @@ class _RestaurantCreationFormState extends State<RestaurantCreationForm> {
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             labelText: "ИНН*",
-                            errorText: innIsUnique ? null : "Данные ИНН уже зарегистрирован"
+                            errorText: innIsUnique ? null : "Данный ИНН уже зарегистрирован"
                         ),
                         validator: _innValidator,
                       ),
