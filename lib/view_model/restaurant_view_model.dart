@@ -40,18 +40,21 @@ class RestaurantViewModel extends ChangeNotifier {
   Future<void> add(Restaurant restaurant) async {
     // TODO: ADD HTTP REQUEST TO CREATE EMPLOYEE
     activeRestaurant = await restaurantRepository.create(restaurant);
+    _restaurants = await restaurantRepository.getAll();
     notifyListeners();
   }
 
   Future<void> update(Restaurant restaurant) async {
     // TODO: ADD HTTP REQUEST TO UPDATE EMPLOYEE
     activeRestaurant = await restaurantRepository.update(restaurant);
+    _restaurants = await restaurantRepository.getAll();
     notifyListeners();
   }
 
   Future<void> delete(Restaurant restaurant) async {
     // TODO: ADD HTTP REQUEST TO DELETE EMPLOYEE
     await restaurantRepository.delete(restaurant);
+    _restaurants = await restaurantRepository.getAll();
     notifyListeners();
   }
 
