@@ -39,7 +39,6 @@ class Api {
       }, onError: (DioException error, ErrorInterceptorHandler handler) async {
         logger.e("Api got error\n", error: error);
         logger.e("Response status code\n${error.response?.statusCode}");
-        logger.e("Response data\n${error.response?.data.toString()}");
 
         if (error.response?.statusCode == 401) {
           logger.e("Start process anauthorized request");

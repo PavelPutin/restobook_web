@@ -29,8 +29,6 @@ class HttpAuthService extends AbstractAuthService {
       );
 
       logger.t("Response status is ${response.statusCode}");
-      logger.t("Response data");
-      logger.t(response.data);
 
       if (response.statusCode! == 200) {
         var accessToken = response.data["access_token"];
