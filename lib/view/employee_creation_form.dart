@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../model/entities/employee.dart';
+import '../model/utils/validators.dart';
 import '../view_model/restaurant_view_model.dart';
 
 class EmployeeCreationForm extends StatefulWidget {
@@ -55,7 +56,21 @@ class _EmployeeCreationFormState extends State<EmployeeCreationForm> {
                             labelText: "Логин администратора*",
                             errorText: loginIsUnique ? null : "Этот логин уже занят"
                         ),
-                        validator: _nameValidator,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return "Поле обязательное";
+                          }
+
+                          var contentCheck = onlyEnglishAndDigits(value);
+                          if (contentCheck != null) {
+                            return contentCheck;
+                          }
+
+                          if (value.length > 512) {
+                            return "Логин не должен быть длиннее 512 символов";
+                          }
+                          return null;
+                        },
                       ),
                     ),
                     Container(
@@ -65,7 +80,7 @@ class _EmployeeCreationFormState extends State<EmployeeCreationForm> {
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: "Фамилия администратора*"),
-                        validator: _nameValidator,
+                        validator: surnameValidator,
                       ),
                     ),
                     Container(
@@ -74,7 +89,7 @@ class _EmployeeCreationFormState extends State<EmployeeCreationForm> {
                         controller: nameController,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(), labelText: "Имя администратора*"),
-                        validator: _nameValidator,
+                        validator: nameValidator,
                       ),
                     ),
                     Container(
@@ -83,7 +98,7 @@ class _EmployeeCreationFormState extends State<EmployeeCreationForm> {
                         controller: patronymicController,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(), labelText: "Отчество администратора"),
-                        validator: _patronymicValidator,
+                        validator: patronymicValidator,
                       ),
                     ),
                     Container(
@@ -92,7 +107,16 @@ class _EmployeeCreationFormState extends State<EmployeeCreationForm> {
                         controller: passwordController,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(), labelText: "Пароль администратора*"),
-                        validator: _nameValidator,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return "Поле обязательное";
+                          }
+                          var contentCheck = onlyEnglishDigitsAndSomeSpecial(value);
+                          if (contentCheck != null) {
+                            return contentCheck;
+                          }
+                          return null;
+                        },
                       ),
                     ),
                     Container(
@@ -128,25 +152,6 @@ class _EmployeeCreationFormState extends State<EmployeeCreationForm> {
         ),
       ),
     );
-  }
-
-  String? _nameValidator(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return "Обязательное поле";
-    }
-
-    if (value.length > 512) {
-      return "Максимальная длина 512 символов";
-    }
-    return null;
-  }
-
-  String? _patronymicValidator(String? value) {
-    if (!(value == null || value.trim().isEmpty) && value.length > 512) {
-      return "Максимальная длина 512 символов";
-    }
-
-    return null;
   }
 
   void submit() async {

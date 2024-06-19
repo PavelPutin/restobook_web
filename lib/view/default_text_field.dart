@@ -18,6 +18,7 @@ class DefaultTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
           border: const OutlineInputBorder(), labelText: labelText),
       validator: validator,
